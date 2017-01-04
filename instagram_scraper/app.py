@@ -22,7 +22,7 @@ class InstagramScraper(object):
 
     """InstagramScraper scrapes and downloads an instagram user's photos and videos"""
 
-    def __init__(self, usernames, max, login_user=None, login_pass=None, dst=None):
+    def __init__(self, usernames, quiet, max, login_user=None, login_pass=None, dst=None):
         self.usernames = usernames if isinstance(usernames, list) else [usernames]
         self.login_user = login_user
         self.login_pass = login_pass
@@ -278,6 +278,7 @@ def main():
     parser.add_argument('--login_user', '-u', help='Instagram login user')
     parser.add_argument('--login_pass', '-p', help='Instagram login password')
     parser.add_argument('--filename', '-f', help='Path to a file containing a list of users to scrape')
+    parser.add_argument('--quiet', '-q', help='Be quiet while scraping')
     parser.add_argument('--maximum', '-m', help='Maximum number of items to scrape')
 
     args = parser.parse_args()
@@ -300,12 +301,16 @@ def main():
         except ValueError:
             max = 0
 
+    quiet = False
+    if args.quiet:
+        quiet = True
+
     if args.filename:
         usernames = InstagramScraper.parse_file_usernames(args.filename)
     else:
         usernames = InstagramScraper.parse_str_usernames(','.join(args.username))
 
-    scraper = InstagramScraper(usernames, max, args.login_user, args.login_pass, args.destination )
+    scraper = InstagramScraper(usernames, quiet, max, args.login_user, args.login_pass, args.destination )
     scraper.scrape()
 
 if __name__ == '__main__':
