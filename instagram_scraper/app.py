@@ -118,7 +118,7 @@ class InstagramScraper(object):
                     iter = 0
                     for item in tqdm.tqdm(stories, desc='Searching {0} for stories'.format(username), unit=" media", disable=self.quiet):
                         iter = iter + 1
-                        if ( self.max <> 0 and iter >= self.max ):
+                        if ( self.max != 0 and iter >= self.max ):
                             break
                         else:
                             future = executor.submit(self.download, item, dst)
@@ -129,7 +129,7 @@ class InstagramScraper(object):
             for item in tqdm.tqdm(self.media_gen(username), desc='Searching {0} for posts'.format(username), 
                                 unit=' media', disable=self.quiet):
                 iter = iter + 1
-                if ( self.max <> 0 and iter >= self.max ):
+                if ( self.max != 0 and iter >= self.max ):
                     break
                 else:
                     future = executor.submit(self.download, item, dst)
